@@ -1,20 +1,26 @@
 package platzi.play;
 
+import platzi.play.contenido.Movie;
+import platzi.play.plataforma.User;
+
 import java.util.Scanner;
 
 public class Main {
     static void main(String[] args) {
-        System.out.println("Platzi Play");
+        System.out.println("Platzi Play 🍿");
 
-        Scanner scanner = new Scanner(System.in); // with this parameter we will be reviewing what the user enters via the console
-        System.out.println("¿Cuál es tu nombre?");
-        String name = scanner.nextLine(); // this is a variable, we capture the next line that the user types into the console
+        Movie movie = new Movie();
 
-        System.out.println("Hola " + name + ", esto es Platzi Play 🚀");
+        movie.title = "El Señor de los Anillos";
+        movie.yearOfRelease = 2001;
+        movie.movieGenre = "Fantasía";
+        movie.rateMovie(4.7);
 
-        System.out.println(name + "¿Cuanto años tienes?");
-        int age = scanner.nextInt();
+        User user = new User();
+        user.name = "Eduardo";
 
-        System.out.println(name + ", puedes ver contenido +" + age);
+        user.watchMovie(movie);
+
+
     }
 }
