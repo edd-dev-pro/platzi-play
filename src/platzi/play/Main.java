@@ -17,7 +17,6 @@ public class Main {
         double rating = ScannerUtils.getDecimal("Calificación del contenido");
 
         Movie movie = new Movie(title, duration, movieGenre, rating);
-        movie.rateMovie(rating);
 
         System.out.println(movie.getTechnicalSpecifications());
 
