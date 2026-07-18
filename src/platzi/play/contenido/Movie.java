@@ -11,6 +11,19 @@ public class Movie {
     public double rating;
     public boolean available;
 
+    public Movie(String title, int duration, String movieGenre) {
+        this.title = title;
+        this.duration = duration;
+        this.movieGenre = movieGenre;
+        this.releaseDate = LocalDate.now();
+        this.available = true;
+    }
+
+    public Movie(String title, int duration, String movieGenre, double rating) {
+        this(title, duration, movieGenre);
+        this.rateMovie(rating);
+    }
+
     public void reproduce() {
         System.out.println("Reproduciendo " + title);
     }
