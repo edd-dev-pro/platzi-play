@@ -28,6 +28,16 @@ public class Platform {
         this.content.remove(movie);
     }
 
+    public Movie searchByTitle(String title) {
+        for (Movie movie : content) {
+            if (movie.getTitle().equalsIgnoreCase(title)) {
+                return movie;
+            }
+        }
+
+        return null;
+    }
+
     public String getName() {
         return name;
     }
