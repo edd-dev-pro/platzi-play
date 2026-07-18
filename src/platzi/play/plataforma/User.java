@@ -9,6 +9,12 @@ public class User {
     public String email;
     public LocalDateTime registrationDate;
 
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.registrationDate = LocalDateTime.now();
+    }
+
     public void watchMovie(Movie movie) {
         System.out.println(name + " estás viendo...");
         movie.reproduce();
