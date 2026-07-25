@@ -2,6 +2,7 @@ package platzi.play;
 
 import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
+import platzi.play.exception.ExistingFilmException;
 import platzi.play.plataforma.Platform;
 import platzi.play.util.ScannerUtils;
 
@@ -50,7 +51,11 @@ public class Main {
                     int duration = ScannerUtils.getNumber("Duración del contenido");
                     double rating = ScannerUtils.getDecimal("Calificación del contenido");
 
-                    platform.addMovie(new Movie(title, duration, movieGenre, rating));
+                    try {
+                        platform.addMovie(new Movie(title, duration, movieGenre, rating));
+                    } catch (ExistingFilmException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case SHOW_CONTENT -> {
                     List<String> titles = platform.getTitles();

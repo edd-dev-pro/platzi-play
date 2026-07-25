@@ -2,6 +2,7 @@ package platzi.play.plataforma;
 
 import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
+import platzi.play.exception.ExistingFilmException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,6 +18,12 @@ public class Platform {
     }
 
     public void addMovie(Movie movie) {
+        Movie doesMovieExist = this.searchByTitle(movie.getTitle());
+
+        if (doesMovieExist != null) {
+            throw new ExistingFilmException(movie.getTitle());
+        }
+
         this.content.add(movie);
     }
 
