@@ -14,6 +14,7 @@ public class Main {
     public static final int SHOW_CONTENT = 2;
     public static final int SEARCH_BY_TITLE = 3;
     public static final int SEARCH_BY_GENDER = 4;
+    public static final int MOST_POPULAR_ONES = 5;
     public static final int REMOVE_MOVIE = 8;
     public static final int GO_OUT = 9;
 
@@ -21,9 +22,11 @@ public class Main {
     static void main(String[] args) {
         Platform platform = new Platform(PLATFORM_NAME);
 
-        System.out.println(PLATFORM_NAME + " - v" + VERSION);
+        System.out.println(PLATFORM_NAME + " - v" + VERSION + "\n");
 
         uploadMovies(platform);
+
+        System.out.println("Más de " + platform.totalDurationOfcontent() + " minutos de contenido \n");
 
         while (true) {
             int optionNumber = ScannerUtils.getNumber("""
@@ -32,6 +35,7 @@ public class Main {
                 2. Mostrar todo el catálogo.
                 3. Buscar por título.
                 4. Buscar por género.
+                5. Ver los más populares.
                 8. Eliminar película.
                 9. Salir.
             """);
@@ -48,7 +52,8 @@ public class Main {
                     platform.addMovie(new Movie(title, duration, movieGenre, rating));
                 }
                 case SHOW_CONTENT -> {
-                    platform.showTitles();
+                    List<String> titles = platform.getTitles();
+                    titles.forEach(System.out::println);
                 }
                 case SEARCH_BY_TITLE -> {
                     String title = ScannerUtils.getText("¿Cuál titulo estás buscando?");
@@ -62,10 +67,15 @@ public class Main {
                 }
                 case SEARCH_BY_GENDER -> {
                     String gender = ScannerUtils.getText("Género del contenido a buscar");
-                    List<Movie> content = platform.SearchByMovieGenre(gender);
+                    List<Movie> content = platform.searchByGender(gender);
 
                     System.out.println(content.size() + " resutado(s) encontrados para el género " + gender);
                     content.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                }
+                case MOST_POPULAR_ONES -> {
+                    int num = ScannerUtils.getNumber("Cantidad de resultados a mostrar");
+                    List<Movie> popularMovies = platform.getMostPopularOnes(num);
+                    popularMovies.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
                 }
                 case REMOVE_MOVIE -> {
                     String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
