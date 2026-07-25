@@ -1,5 +1,8 @@
 package platzi.play.util;
 
+import platzi.play.contenido.Gender;
+
+import java.awt.*;
 import java.util.Scanner;
 
 public class ScannerUtils {
@@ -34,5 +37,23 @@ public class ScannerUtils {
         double number = SCANNER.nextDouble();
         SCANNER.nextLine();
         return number;
+    }
+
+    public static Gender getGender(String message) {
+        while (true) {
+            System.out.println(message + "... Opccines:");
+            for (Gender gender : Gender.values()) {
+                System.out.println("-" + gender.name());
+            }
+
+            System.out.println("¿Cuál quieres?");
+            String input = SCANNER.nextLine();
+
+            try {
+                return Gender.valueOf(input.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Género no aceptado. ");
+            }
+        }
     }
 }

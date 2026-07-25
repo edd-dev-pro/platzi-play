@@ -1,5 +1,6 @@
 package platzi.play;
 
+import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 import platzi.play.plataforma.Platform;
 import platzi.play.util.ScannerUtils;
@@ -45,7 +46,7 @@ public class Main {
             switch (optionNumber) {
                 case ADD_MOVIE -> {
                     String title = ScannerUtils.getText("Nombre del contenido");
-                    String movieGenre = ScannerUtils.getText("Género del contenido");
+                    Gender movieGenre = ScannerUtils.getGender("Género del contenido");
                     int duration = ScannerUtils.getNumber("Duración del contenido");
                     double rating = ScannerUtils.getDecimal("Calificación del contenido");
 
@@ -66,7 +67,7 @@ public class Main {
                     }
                 }
                 case SEARCH_BY_GENDER -> {
-                    String gender = ScannerUtils.getText("Género del contenido a buscar");
+                    Gender gender = ScannerUtils.getGender("Género del contenido a buscar");
                     List<Movie> content = platform.searchByGender(gender);
 
                     System.out.println(content.size() + " resutado(s) encontrados para el género " + gender);
@@ -96,15 +97,15 @@ public class Main {
     }
 
     private static void uploadMovies(Platform platform) {
-        platform.addMovie(new Movie("Shrek", 90, "Animada"));
-        platform.addMovie(new Movie("Inception", 148, "Ciencia Ficción"));
-        platform.addMovie(new Movie("Titanic", 195, "Drama", 4.6));
-        platform.addMovie(new Movie("John Wick", 101, "Acción"));
-        platform.addMovie(new Movie("El Conjuro", 112, "Terror", 3.0));
-        platform.addMovie(new Movie("Coco", 105, "Animada", 4.7));
-        platform.addMovie(new Movie("Interstellar", 169, "Ciencia Ficción", 5));
-        platform.addMovie(new Movie("Joker", 122, "Drama"));
-        platform.addMovie(new Movie("Toy Story", 81, "Animada", 4.5));
-        platform.addMovie(new Movie("Avengers: Endgame", 181, "Acción", 3.9));
+        platform.addMovie(new Movie("Shrek", 90, Gender.ANIMATION));
+        platform.addMovie(new Movie("Inception", 148, Gender.SCI_FI));
+        platform.addMovie(new Movie("Titanic", 195, Gender.DRAMA, 4.6));
+        platform.addMovie(new Movie("John Wick", 101, Gender.ACTION));
+        platform.addMovie(new Movie("El Conjuro", 112, Gender.HORROR, 3.0));
+        platform.addMovie(new Movie("Coco", 105, Gender.ANIMATION, 4.7));
+        platform.addMovie(new Movie("Interstellar", 169, Gender.SCI_FI, 5));
+        platform.addMovie(new Movie("Joker", 122, Gender.DRAMA));
+        platform.addMovie(new Movie("Toy Story", 81, Gender.ANIMATION, 4.5));
+        platform.addMovie(new Movie("Avengers: Endgame", 181, Gender.ACTION, 3.9));
     }
 }

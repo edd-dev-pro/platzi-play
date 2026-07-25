@@ -1,5 +1,6 @@
 package platzi.play.plataforma;
 
+import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ public class Platform {
                 .orElse(null);
     }
 
-    public List<Movie> searchByGender(String gender) {
+    public List<Movie> searchByGender(Gender gender) {
         return content.stream()
-                .filter(movie -> movie.getMovieGenre().equalsIgnoreCase(gender))
+                .filter(movie -> movie.getMovieGenre().equals(gender))
                 .toList();
     }
 
