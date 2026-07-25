@@ -1,36 +1,116 @@
 package platzi.play;
 
+import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
-import platzi.play.plataforma.User;
+import platzi.play.exception.ExistingFilmException;
+import platzi.play.plataforma.Platform;
 import platzi.play.util.ScannerUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class Main {
     public static final String PLATFORM_NAME = "Platzi Play";
     public static final String VERSION = "1.0.0";
 
+    public static final int ADD_MOVIE = 1;
+    public static final int SHOW_CONTENT = 2;
+    public static final int SEARCH_BY_TITLE = 3;
+    public static final int SEARCH_BY_GENDER = 4;
+    public static final int MOST_POPULAR_ONES = 5;
+    public static final int REMOVE_MOVIE = 8;
+    public static final int GO_OUT = 9;
+
+
     static void main(String[] args) {
-        System.out.println(PLATFORM_NAME + " - " + VERSION);
+        Platform platform = new Platform(PLATFORM_NAME);
 
-        String title = ScannerUtils.getText("Nombre del contenido");
-        String movieGenre = ScannerUtils.getText("Género del contenido");
-        int duration = ScannerUtils.getNumber("Duración del contenido");
-        double rating = ScannerUtils.getDecimal("Calificación del contenido");
+        System.out.println(PLATFORM_NAME + " - v" + VERSION + "\n");
 
-        Movie movie = new Movie();
-        movie.title = title;
-        movie.releaseDate = LocalDate.of(2018, 10, 15);
-        movie.movieGenre = movieGenre;
-        movie.duration = duration;
-        movie.rateMovie(rating);
+        uploadMovies(platform);
 
-        System.out.println(movie.getTechnicalSpecifications());
+        System.out.println("Más de " + platform.totalDurationOfcontent() + " minutos de contenido \n");
 
-        User user = new User();
-        user.name = "Eduardo";
-        user.registrationDate = LocalDateTime.of(2026, 7, 15, 19, 24, 12);
-        user.watchMovie(movie);
+        while (true) {
+            int optionNumber = ScannerUtils.getNumber("""
+                Ingrese una de las siguientes opciones: 
+                1. Agregar película.
+                2. Mostrar todo el catálogo.
+                3. Buscar por título.
+                4. Buscar por género.
+                5. Ver los más populares.
+                8. Eliminar película.
+                9. Salir.
+            """);
+
+            System.out.println("Opción elegida: " + optionNumber);
+
+            switch (optionNumber) {
+                case ADD_MOVIE -> {
+                    String title = ScannerUtils.getText("Nombre del contenido");
+                    Gender movieGenre = ScannerUtils.getGender("Género del contenido");
+                    int duration = ScannerUtils.getNumber("Duración del contenido");
+                    double rating = ScannerUtils.getDecimal("Calificación del contenido");
+
+                    try {
+                        platform.addMovie(new Movie(title, duration, movieGenre, rating));
+                    } catch (ExistingFilmException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                case SHOW_CONTENT -> {
+                    List<String> titles = platform.getTitles();
+                    titles.forEach(System.out::println);
+                }
+                case SEARCH_BY_TITLE -> {
+                    String title = ScannerUtils.getText("¿Cuál titulo estás buscando?");
+                    Movie movie = platform.searchByTitle(title);
+
+                    if (movie != null) {
+                        System.out.println(movie.getTechnicalSpecifications());
+                    } else {
+                        System.out.println(title + " no se encuentra en nuestro catálogo de " + platform.getName());
+                    }
+                }
+                case SEARCH_BY_GENDER -> {
+                    Gender gender = ScannerUtils.getGender("Género del contenido a buscar");
+                    List<Movie> content = platform.searchByGender(gender);
+
+                    System.out.println(content.size() + " resutado(s) encontrados para el género " + gender);
+                    content.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                }
+                case MOST_POPULAR_ONES -> {
+                    int num = ScannerUtils.getNumber("Cantidad de resultados a mostrar");
+                    List<Movie> popularMovies = platform.getMostPopularOnes(num);
+                    popularMovies.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                }
+                case REMOVE_MOVIE -> {
+                    String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
+                    Movie movie = platform.searchByTitle(title);
+
+                    if (movie != null) {
+                        platform.removeMovie(movie);
+                        System.out.println("El títlulo " + title + " se ha eliminado.");
+                    } else {
+                        System.out.println("El títlulo " + title + " no se encuentra en nuestro catálogo de " + platform.getName() + ", no se puede eliminar.");
+                    }
+                }
+                case GO_OUT -> {
+                    System.exit(0);
+                }
+            }
+        }
+    }
+
+    private static void uploadMovies(Platform platform) {
+        platform.addMovie(new Movie("Shrek", 90, Gender.ANIMATION));
+        platform.addMovie(new Movie("Inception", 148, Gender.SCI_FI));
+        platform.addMovie(new Movie("Titanic", 195, Gender.DRAMA, 4.6));
+        platform.addMovie(new Movie("John Wick", 101, Gender.ACTION));
+        platform.addMovie(new Movie("El Conjuro", 112, Gender.HORROR, 3.0));
+        platform.addMovie(new Movie("Coco", 105, Gender.ANIMATION, 4.7));
+        platform.addMovie(new Movie("Interstellar", 169, Gender.SCI_FI, 5));
+        platform.addMovie(new Movie("Joker", 122, Gender.DRAMA));
+        platform.addMovie(new Movie("Toy Story", 81, Gender.ANIMATION, 4.5));
+        platform.addMovie(new Movie("Avengers: Endgame", 181, Gender.ACTION, 3.9));
     }
 }
