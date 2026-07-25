@@ -2,8 +2,9 @@ package platzi.play;
 
 import platzi.play.contenido.Movie;
 import platzi.play.plataforma.Platform;
-import platzi.play.plataforma.User;
 import platzi.play.util.ScannerUtils;
+
+import java.util.List;
 
 public class Main {
     public static final String PLATFORM_NAME = "Platzi Play";
@@ -12,14 +13,15 @@ public class Main {
     public static final int ADD_MOVIE = 1;
     public static final int SHOW_CONTENT = 2;
     public static final int SEARCH_BY_TITLE = 3;
-    public static final int REMOVE_MOVIE = 4;
-    public static final int GO_OUT = 5;
+    public static final int SEARCH_BY_GENDER = 4;
+    public static final int REMOVE_MOVIE = 8;
+    public static final int GO_OUT = 9;
 
 
     static void main(String[] args) {
         Platform platform = new Platform(PLATFORM_NAME);
 
-        System.out.println(PLATFORM_NAME + " - " + VERSION);
+        System.out.println(PLATFORM_NAME + " - v" + VERSION);
 
         uploadMovies(platform);
 
@@ -29,8 +31,9 @@ public class Main {
                 1. Agregar película.
                 2. Mostrar todo el catálogo.
                 3. Buscar por título.
-                4. Eliminar película.
-                5. Salir.
+                4. Buscar por género.
+                8. Eliminar película.
+                9. Salir.
             """);
 
             System.out.println("Opción elegida: " + optionNumber);
@@ -56,6 +59,13 @@ public class Main {
                     } else {
                         System.out.println(title + " no se encuentra en nuestro catálogo de " + platform.getName());
                     }
+                }
+                case SEARCH_BY_GENDER -> {
+                    String gender = ScannerUtils.getText("Género del contenido a buscar");
+                    List<Movie> content = platform.SearchByMovieGenre(gender);
+
+                    System.out.println(content.size() + " resutado(s) encontrados para el género " + gender);
+                    content.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
                 }
                 case REMOVE_MOVIE -> {
                     String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
