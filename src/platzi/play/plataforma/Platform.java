@@ -19,9 +19,11 @@ public class Platform {
     }
 
     public void showTitles() {
-        for (Movie movie : content) {
-            System.out.println(movie.getTitle());
-        }
+        // for (Movie movie : content) {
+            // System.out.println(movie.getTitle());
+        // }
+
+        content.forEach(movie -> System.out.println(movie.getTitle())); // the foreach method is included in the List class / -> lamda expretion
     }
 
     public void removeMovie(Movie movie) {
@@ -29,13 +31,23 @@ public class Platform {
     }
 
     public Movie searchByTitle(String title) {
-        for (Movie movie : content) {
-            if (movie.getTitle().equalsIgnoreCase(title)) {
-                return movie;
-            }
-        }
+        // for (Movie movie : content) {
+            // if (movie.getTitle().equalsIgnoreCase(title)) {
+                // return movie;
+            // }
+        // }
 
-        return null;
+        // the stream allows us to iterate through the list
+        return content.stream()
+                .filter(movie -> movie.getTitle().equalsIgnoreCase(title))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Movie> SearchByMovieGenre (String gender) {
+        return content.stream()
+                .filter(movie -> movie.getMovieGenre().equalsIgnoreCase(gender))
+                .toList();
     }
 
     public String getName() {
