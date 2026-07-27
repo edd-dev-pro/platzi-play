@@ -1,5 +1,6 @@
 package platzi.play;
 
+import platzi.play.contenido.ContentSummary;
 import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 import platzi.play.exception.ExistingFilmException;
@@ -58,8 +59,11 @@ public class Main {
                     }
                 }
                 case SHOW_CONTENT -> {
-                    List<String> titles = platform.getTitles();
-                    titles.forEach(System.out::println);
+                    // List<String> titles = platform.getTitles();
+                    // titles.forEach(System.out::println);
+
+                    List<ContentSummary> summaries = platform.getSummary();
+                    summaries.forEach(contentSummary -> System.out.println(contentSummary.toString()));
                 }
                 case SEARCH_BY_TITLE -> {
                     String title = ScannerUtils.getText("¿Cuál titulo estás buscando?");
