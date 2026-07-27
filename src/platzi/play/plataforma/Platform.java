@@ -4,6 +4,7 @@ import platzi.play.contenido.ContentSummary;
 import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 import platzi.play.exception.ExistingFilmException;
+import platzi.play.util.FileUtils;
 
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class Platform {
             throw new ExistingFilmException(movie.getTitle());
         }
 
+        FileUtils.writeToFile(movie);
         this.content.add(movie);
     }
 
