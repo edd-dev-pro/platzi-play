@@ -18,6 +18,7 @@ public class Main {
     public static final int SEARCH_BY_TITLE = 3;
     public static final int SEARCH_BY_GENDER = 4;
     public static final int MOST_POPULAR_ONES = 5;
+    public static final int PLAY_MOVIE = 6;
     public static final int REMOVE_MOVIE = 8;
     public static final int GO_OUT = 9;
 
@@ -39,6 +40,7 @@ public class Main {
                 3. Buscar por título.
                 4. Buscar por género.
                 5. Ver los más populares.
+                6. Reproducir.
                 8. Eliminar película.
                 9. Salir.
             """);
@@ -86,6 +88,16 @@ public class Main {
                     int num = ScannerUtils.getNumber("Cantidad de resultados a mostrar");
                     List<Movie> popularMovies = platform.getMostPopularOnes(num);
                     popularMovies.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                }
+                case PLAY_MOVIE -> {
+                    String name = ScannerUtils.getText("Nombre del contenido a reproducir");
+                    Movie movie = platform.searchByTitle(name);
+
+                    if (movie != null) {
+                        platform.playMovie(movie);
+                    } else {
+                        System.out.println(name + " no existe.");
+                    }
                 }
                 case REMOVE_MOVIE -> {
                     String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
