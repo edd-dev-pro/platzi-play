@@ -5,6 +5,7 @@ import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 import platzi.play.exception.ExistingFilmException;
 import platzi.play.plataforma.Platform;
+import platzi.play.util.FileUtils;
 import platzi.play.util.ScannerUtils;
 
 import java.util.List;
@@ -117,16 +118,8 @@ public class Main {
         }
     }
 
+    // private static void uploadMovies(Platform platform) throws IOException { // question
     private static void uploadMovies(Platform platform) {
-        platform.addMovie(new Movie("Shrek", 90, Gender.ANIMATION));
-        platform.addMovie(new Movie("Inception", 148, Gender.SCI_FI));
-        platform.addMovie(new Movie("Titanic", 195, Gender.DRAMA, 4.6));
-        platform.addMovie(new Movie("John Wick", 101, Gender.ACTION));
-        platform.addMovie(new Movie("El Conjuro", 112, Gender.HORROR, 3.0));
-        platform.addMovie(new Movie("Coco", 105, Gender.ANIMATION, 4.7));
-        platform.addMovie(new Movie("Interstellar", 169, Gender.SCI_FI, 5));
-        platform.addMovie(new Movie("Joker", 122, Gender.DRAMA));
-        platform.addMovie(new Movie("Toy Story", 81, Gender.ANIMATION, 4.5));
-        platform.addMovie(new Movie("Avengers: Endgame", 181, Gender.ACTION, 3.9));
+        platform.getContent().addAll(FileUtils.readFile());
     }
 }
