@@ -12,13 +12,14 @@ public class Main {
     public static final String PLATFORM_NAME = "Platzi Play";
     public static final String VERSION = "1.0.0";
 
-    public static final int ADD_MOVIE = 1;
+    public static final int ADD_CONTENT = 1;
     public static final int SHOW_CONTENT = 2;
     public static final int SEARCH_BY_TITLE = 3;
     public static final int SEARCH_BY_GENDER = 4;
     public static final int MOST_POPULAR_ONES = 5;
     public static final int PLAY_MOVIE = 6;
-    public static final int REMOVE_MOVIE = 8;
+    public static final int SEARCH_BY_TYPE = 7;
+    public static final int REMOVE_CONTENT = 8;
     public static final int GO_OUT = 9;
 
 
@@ -40,6 +41,7 @@ public class Main {
                 4. Buscar por género.
                 5. Ver los más populares.
                 6. Reproducir.
+                7. Buscar por tipo de contenido.
                 8. Eliminar contenido.
                 9. Salir.
             """);
@@ -47,7 +49,7 @@ public class Main {
             System.out.println("Opción elegida: " + optionNumber);
 
             switch (optionNumber) {
-                case ADD_MOVIE -> {
+                case ADD_CONTENT -> {
                     int contentType = ScannerUtils.getNumber("¿Qué tipo de contenido quieres agregar? 1. Película\n2. Documentales");
                     String title = ScannerUtils.getText("Nombre del contenido");
                     Gender movieGenre = ScannerUtils.getGender("Género del contenido");
@@ -105,7 +107,18 @@ public class Main {
                         System.out.println(name + " no existe.");
                     }
                 }
-                case REMOVE_MOVIE -> {
+                case SEARCH_BY_TYPE -> {
+                    int contentType = ScannerUtils.getNumber("¿Qué tipo de contenido quieres buscar?\n1. Película\n2. Documentales");
+
+                    if (contentType == 1) {
+                       List<Movie> movies = platform.getMovies();
+                       movies.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                    } else {
+                        List<Documentary> documentaries = platform.getDocumentaries();
+                        documentaries.forEach(documentary -> System.out.println(documentary.getTechnicalSpecifications() + "\n"));
+                    }
+                }
+                case REMOVE_CONTENT -> {
                     String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
                     Content content = platform.searchByTitle(title);
 
