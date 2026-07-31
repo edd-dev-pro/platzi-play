@@ -12,6 +12,11 @@ public class Documentary extends Content {
         this.narrator = narrator;
     }
 
+    @Override
+    public void reproduce() {
+        System.out.println("Reproduciendo el documental " + getTitle() + " narrado por " + getNarrator() + "...");
+    }
+
     public String getNarrator() {
         return narrator;
     }

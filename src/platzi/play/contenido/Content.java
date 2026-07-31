@@ -2,7 +2,7 @@ package platzi.play.contenido;
 
 import java.time.LocalDate;
 
-public class Content {
+public abstract class Content {
     private String title;
     private String description;
     private int duration;
@@ -24,9 +24,7 @@ public class Content {
         this.rateMovie(rating);
     }
 
-    public void reproduce() {
-        System.out.println("Reproduciendo " + title);
-    }
+    public abstract void reproduce();
 
     public String getTechnicalSpecifications() {
         return title + " (" + releaseDate.getYear() + ")\n" +
