@@ -1,20 +1,22 @@
 package platzi.play.plataforma;
 
+import platzi.play.contenido.ContentSummary;
 import platzi.play.contenido.Gender;
 import platzi.play.contenido.Movie;
 import platzi.play.exception.ExistingFilmException;
+import platzi.play.util.FileUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Platform {
     private String name;
     private List<Movie> content;
+    private Map<Movie, Integer> numberOfViews;
 
     public Platform(String name) {
         this.name = name;
         this.content = new ArrayList<>();
+        this.numberOfViews = new HashMap<>();
     }
 
     public void addMovie(Movie movie) {
@@ -24,7 +26,21 @@ public class Platform {
             throw new ExistingFilmException(movie.getTitle());
         }
 
+        FileUtils.writeToFile(movie);
         this.content.add(movie);
+    }
+
+    public void playMovie (Movie movie) {
+        int count = numberOfViews.getOrDefault(movie, 0);
+        System.out.println(movie.getTitle() + " ha sido reproducido " + count + " veces.");
+
+        this.countViews(movie);
+        movie.reproduce();
+    }
+
+    private void countViews (Movie movie) {
+        int currentCount = numberOfViews.getOrDefault(movie, 0);
+        numberOfViews.put(movie, currentCount + 1);
     }
 
     public List<String> getTitles() {
@@ -36,6 +52,12 @@ public class Platform {
 
         return content.stream()
                 .map(Movie::getTitle)
+                .toList();
+    }
+
+    public List<ContentSummary> getSummary () {
+        return content.stream()
+                .map(movie -> new ContentSummary(movie.getTitle(), movie.getDuration(), movie.getMovieGenre()))
                 .toList();
     }
 
