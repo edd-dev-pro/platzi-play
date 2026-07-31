@@ -1,8 +1,6 @@
 package platzi.play;
 
-import platzi.play.contenido.ContentSummary;
-import platzi.play.contenido.Gender;
-import platzi.play.contenido.Movie;
+import platzi.play.contenido.*;
 import platzi.play.exception.ExistingFilmException;
 import platzi.play.plataforma.Platform;
 import platzi.play.util.FileUtils;
@@ -36,13 +34,13 @@ public class Main {
         while (true) {
             int optionNumber = ScannerUtils.getNumber("""
                 Ingrese una de las siguientes opciones: 
-                1. Agregar película.
+                1. Agregar contenido.
                 2. Mostrar todo el catálogo.
                 3. Buscar por título.
                 4. Buscar por género.
                 5. Ver los más populares.
                 6. Reproducir.
-                8. Eliminar película.
+                8. Eliminar contenido.
                 9. Salir.
             """);
 
@@ -50,13 +48,20 @@ public class Main {
 
             switch (optionNumber) {
                 case ADD_MOVIE -> {
+                    int contentType = ScannerUtils.getNumber("¿Qué tipo de contenido quieres agregar? 1. Película\n2. Documentales");
                     String title = ScannerUtils.getText("Nombre del contenido");
                     Gender movieGenre = ScannerUtils.getGender("Género del contenido");
                     int duration = ScannerUtils.getNumber("Duración del contenido");
                     double rating = ScannerUtils.getDecimal("Calificación del contenido");
 
+
                     try {
-                        platform.addMovie(new Movie(title, duration, movieGenre, rating));
+                        if (contentType == 1) {
+                            platform.addContent(new Movie(title, duration, movieGenre, rating));
+                        } else {
+                            String narrator = ScannerUtils.getText("Narrador del documental");
+                            platform.addContent(new Documentary(title, duration, movieGenre, rating, narrator));
+                        }
                     } catch (ExistingFilmException e) {
                         System.out.println(e.getMessage());
                     }
@@ -70,42 +75,42 @@ public class Main {
                 }
                 case SEARCH_BY_TITLE -> {
                     String title = ScannerUtils.getText("¿Cuál titulo estás buscando?");
-                    Movie movie = platform.searchByTitle(title);
+                    Content content = platform.searchByTitle(title);
 
-                    if (movie != null) {
-                        System.out.println(movie.getTechnicalSpecifications());
+                    if (content != null) {
+                        System.out.println(content.getTechnicalSpecifications());
                     } else {
                         System.out.println(title + " no se encuentra en nuestro catálogo de " + platform.getName());
                     }
                 }
                 case SEARCH_BY_GENDER -> {
                     Gender gender = ScannerUtils.getGender("Género del contenido a buscar");
-                    List<Movie> content = platform.searchByGender(gender);
+                    List<Content> content = platform.searchByGender(gender);
 
                     System.out.println(content.size() + " resutado(s) encontrados para el género " + gender);
                     content.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
                 }
                 case MOST_POPULAR_ONES -> {
                     int num = ScannerUtils.getNumber("Cantidad de resultados a mostrar");
-                    List<Movie> popularMovies = platform.getMostPopularOnes(num);
-                    popularMovies.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
+                    List<Content> popularContents = platform.getMostPopularOnes(num);
+                    popularContents.forEach(movie -> System.out.println(movie.getTechnicalSpecifications() + "\n"));
                 }
                 case PLAY_MOVIE -> {
                     String name = ScannerUtils.getText("Nombre del contenido a reproducir");
-                    Movie movie = platform.searchByTitle(name);
+                    Content content = platform.searchByTitle(name);
 
-                    if (movie != null) {
-                        platform.playMovie(movie);
+                    if (content != null) {
+                        platform.playMovie(content);
                     } else {
                         System.out.println(name + " no existe.");
                     }
                 }
                 case REMOVE_MOVIE -> {
                     String title = ScannerUtils.getText("¿Cuál es el título que se eliminará?");
-                    Movie movie = platform.searchByTitle(title);
+                    Content content = platform.searchByTitle(title);
 
-                    if (movie != null) {
-                        platform.removeMovie(movie);
+                    if (content != null) {
+                        platform.removeMovie(content);
                         System.out.println("El títlulo " + title + " se ha eliminado.");
                     } else {
                         System.out.println("El títlulo " + title + " no se encuentra en nuestro catálogo de " + platform.getName() + ", no se puede eliminar.");

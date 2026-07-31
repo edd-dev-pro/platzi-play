@@ -1,8 +1,8 @@
 package platzi.play.plataforma;
 
+import platzi.play.contenido.Content;
 import platzi.play.contenido.ContentSummary;
 import platzi.play.contenido.Gender;
-import platzi.play.contenido.Movie;
 import platzi.play.exception.ExistingFilmException;
 import platzi.play.util.FileUtils;
 
@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Platform {
     private String name;
-    private List<Movie> content;
-    private Map<Movie, Integer> numberOfViews;
+    private List<Content> content;
+    private Map<Content, Integer> numberOfViews;
 
     public Platform(String name) {
         this.name = name;
@@ -19,39 +19,39 @@ public class Platform {
         this.numberOfViews = new HashMap<>();
     }
 
-    public void addMovie(Movie movie) {
-        Movie doesMovieExist = this.searchByTitle(movie.getTitle());
+    public void addContent(Content content) {
+        Content doesContentExist = this.searchByTitle(content.getTitle());
 
-        if (doesMovieExist != null) {
-            throw new ExistingFilmException(movie.getTitle());
+        if (doesContentExist != null) {
+            throw new ExistingFilmException(content.getTitle());
         }
 
-        FileUtils.writeToFile(movie);
-        this.content.add(movie);
+        FileUtils.writeToFile(content);
+        this.content.add(content);
     }
 
-    public void playMovie (Movie movie) {
-        int count = numberOfViews.getOrDefault(movie, 0);
-        System.out.println(movie.getTitle() + " ha sido reproducido " + count + " veces.");
+    public void playMovie (Content content) {
+        int count = numberOfViews.getOrDefault(content, 0);
+        System.out.println(content.getTitle() + " ha sido reproducido " + count + " veces.");
 
-        this.countViews(movie);
-        movie.reproduce();
+        this.countViews(content);
+        content.reproduce();
     }
 
-    private void countViews (Movie movie) {
-        int currentCount = numberOfViews.getOrDefault(movie, 0);
-        numberOfViews.put(movie, currentCount + 1);
+    private void countViews (Content content) {
+        int currentCount = numberOfViews.getOrDefault(content, 0);
+        numberOfViews.put(content, currentCount + 1);
     }
 
     public List<String> getTitles() {
-        // for (Movie movie : content) {
+        // for (Content movie : content) {
             // System.out.println(movie.getTitle());
         // }
 
         // content.forEach(movie -> System.out.println(movie.getTitle())); // the foreach method is included in the List class / -> lamda expretion
 
         return content.stream()
-                .map(Movie::getTitle)
+                .map(Content::getTitle)
                 .toList();
     }
 
@@ -61,12 +61,12 @@ public class Platform {
                 .toList();
     }
 
-    public void removeMovie(Movie movie) {
-        this.content.remove(movie);
+    public void removeMovie(Content content) {
+        this.content.remove(content);
     }
 
-    public Movie searchByTitle(String title) {
-        // for (Movie movie : content) {
+    public Content searchByTitle(String title) {
+        // for (Content movie : content) {
             // if (movie.getTitle().equalsIgnoreCase(title)) {
                 // return movie;
             // }
@@ -79,22 +79,22 @@ public class Platform {
                 .orElse(null);
     }
 
-    public List<Movie> searchByGender(Gender gender) {
+    public List<Content> searchByGender(Gender gender) {
         return content.stream()
                 .filter(movie -> movie.getMovieGenre().equals(gender))
                 .toList();
     }
 
-    public List<Movie> getMostPopularOnes(int num) {
+    public List<Content> getMostPopularOnes(int num) {
         return content.stream()
-                .sorted(Comparator.comparingDouble(Movie::getRating).reversed()) // Reference method ::
+                .sorted(Comparator.comparingDouble(Content::getRating).reversed()) // Reference method ::
                 .limit(num)
                 .toList();
     }
 
     public int totalDurationOfcontent() {
         return content.stream()
-                .mapToInt(Movie::getDuration)
+                .mapToInt(Content::getDuration)
                 .sum();
     }
 
@@ -102,7 +102,7 @@ public class Platform {
         return name;
     }
 
-    public List<Movie> getContent() {
+    public List<Content> getContent() {
         return content;
     }
 }

@@ -1,7 +1,7 @@
 package platzi.play.util;
 
+import platzi.play.contenido.Content;
 import platzi.play.contenido.Gender;
-import platzi.play.contenido.Movie;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,14 +16,14 @@ public class FileUtils {
     public static final String FILE_NAME = "content.txt";
     public static final String SEPAEATOR = "|";
 
-    public static void writeToFile(Movie movie) {
+    public static void writeToFile(Content content) {
        String line = String.join(
                SEPAEATOR,
-               movie.getTitle(),
-               String.valueOf(movie.getDuration()),
-               movie.getMovieGenre().name(),
-               String.valueOf(movie.getRating()),
-               movie.getReleaseDate().toString()
+               content.getTitle(),
+               String.valueOf(content.getDuration()),
+               content.getMovieGenre().name(),
+               String.valueOf(content.getRating()),
+               content.getReleaseDate().toString()
        );
 
        try {
@@ -35,11 +35,11 @@ public class FileUtils {
            );
        } catch (IOException e) {
            System.out.println("Error escribiendo el archivo. " + e.getMessage());
-        }
+       }
     }
 
-    public static List<Movie> readFile() {
-        List<Movie> archiveMovies = new ArrayList<>();
+    public static List<Content> readFile() {
+        List<Content> archiveContents = new ArrayList<>();
 
         try {
             List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));
@@ -55,16 +55,16 @@ public class FileUtils {
                     double rating = datas[3].isBlank() ? 0 : Double.parseDouble(datas[3]);
                     LocalDate releaseDate = LocalDate.parse(datas[4]);
 
-                    Movie movie = new Movie(title, duration, gender, rating);
-                    movie.setReleaseDate(releaseDate);
+                    Content content = new Content(title, duration, gender, rating);
+                    content.setReleaseDate(releaseDate);
 
-                    archiveMovies.add(movie);
+                    archiveContents.add(content);
                 }
             });
         } catch (IOException e) {
             System.out.println("Error leyendo el archivo. " + e.getMessage());
         }
 
-        return archiveMovies;
+        return archiveContents;
     }
 }
