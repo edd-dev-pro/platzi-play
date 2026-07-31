@@ -1,8 +1,6 @@
 package platzi.play.plataforma;
 
-import platzi.play.contenido.Content;
-import platzi.play.contenido.ContentSummary;
-import platzi.play.contenido.Gender;
+import platzi.play.contenido.*;
 import platzi.play.exception.ExistingFilmException;
 import platzi.play.util.FileUtils;
 
@@ -89,6 +87,20 @@ public class Platform {
         return content.stream()
                 .sorted(Comparator.comparingDouble(Content::getRating).reversed()) // Reference method ::
                 .limit(num)
+                .toList();
+    }
+
+    public List<Movie> getMovies() { // question porque so ya son instancias de movie hay que castear cada elemento
+        return content.stream()
+                .filter(content -> content instanceof Movie)
+                .map(content -> (Movie) content)
+                .toList();
+    }
+
+    public List<Documentary> getDocumentaries() { // question porque so ya son instancias de movie hay que castear cada elemento
+        return content.stream()
+                .filter(content -> content instanceof Documentary)
+                .map(content -> (Documentary) content)
                 .toList();
     }
 
