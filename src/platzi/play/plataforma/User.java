@@ -1,6 +1,6 @@
 package platzi.play.plataforma;
 
-import platzi.play.contenido.Movie;
+import platzi.play.contenido.Content;
 
 import java.time.LocalDateTime;
 
@@ -15,8 +15,8 @@ public class User {
         this.registrationDate = LocalDateTime.now();
     }
 
-    public void watchMovie(Movie movie) {
+    public void watchMovie(Content content) {
         System.out.println(name + " estás viendo...");
-        movie.reproduce();
+        content.reproduce();
     }
 }
