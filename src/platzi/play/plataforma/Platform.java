@@ -104,6 +104,13 @@ public class Platform {
                 .toList();
     }
 
+    public List<Promotion> getPromotedContent() {
+        return content.stream()
+                .filter(content -> content instanceof Promotion)
+                .map(content -> (Promotion) content)
+                .toList();
+    }
+
     public int totalDurationOfcontent() {
         return content.stream()
                 .mapToInt(Content::getDuration)

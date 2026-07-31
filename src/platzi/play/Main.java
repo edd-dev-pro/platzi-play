@@ -32,6 +32,8 @@ public class Main {
 
         System.out.println("Más de " + platform.totalDurationOfcontent() + " minutos de contenido \n");
 
+        platform.getPromotedContent().forEach(content -> System.out.println(content.promote()));
+
         while (true) {
             int optionNumber = ScannerUtils.getNumber("""
                 Ingrese una de las siguientes opciones: 
